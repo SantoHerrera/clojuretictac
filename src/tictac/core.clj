@@ -1,10 +1,40 @@
 (ns tictac.core
   (:gen-class))
 
+(defn getInput
+ []
+ (println "Enter word to find definition ->")
+ (flush)
+ (let [wordEntered (read-line)]
+  (println (str wordEntered "this shit worked"))))
+
+(def nothingEnteredPrompt "please enter something before hitting enter :)")
+
+
+
+(defn nothingEntered [] (println nothingEnteredPrompt) (getInput))
+
+
+
+;(defn getInput
+; [])
+; (println "Enter word to find definition ->")
+; (flush)
+; (let [wordEntered (read-line)]
+;  (if (clojure.string/blank? wordEntered))
+;  (nothingEntered)
+;  (println "everything is going right" wordEntered)])
+
+
+
+(defn -maiin [& args]
+     (getInput))
+
+
+
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  [& arfs]
+  (getInput))
 
 
 (defn square-matrix
@@ -36,7 +66,7 @@
   [board]
   (let [allE (mapcat getAllE board)]
    (vectorlengthEven? allE)))
-  
+
 
 (defn getCell
   [num]
@@ -47,6 +77,10 @@
 
 
 
+;accept user input
+;if its not a number ask for a number
+;if its the number 9 ask for number 0 - 8
+;  else println yayyyyy
 
 
 
@@ -56,4 +90,4 @@
 ;and not this
 ;(defn idk [n p]
 ;  (p (repeat n) vec))
-(idk 3 3)
+;(idk 3 3)
