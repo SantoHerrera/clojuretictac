@@ -3,26 +3,45 @@
 
 
 (defn acceptableAnwser?
-  "returns true if its a string thats inbetween 0 - 8"
+  "returns true if its a string digit thats between 0 - 8"
   [answer]
   (and
     (= 1 (count answer));if string is only one character
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)));
 
-
+(def state (atom (square-matrix 3 "E")))
 
 (defn getInput
   []
   (println "Enter word to find definition ->")
   (flush)
-  (let [wordEntered (read-line)]
-    ;(if (acceptableAnwser? wordEntered)
-      (println "you thought bitch" wordEntered)))
+  (let [numberEntered (read-line)]
+    (if (acceptableAnwser? numberEntered)
+      (println "you worked bitch" wordEntered)
+      (println "it didnt work"))))
+
+
+(defn getCell
+  [num]
+  (let [y (quot num 3)
+        x (- num (* y 3))]
+    (vector y x)))
+
+
+(defn setUp
+  [num]
+  (let [number (Integer/parseInt num)
+        cellCordinates (getCell num)] cellCordinates))
 
 
 
-
+(defn getInputV2
+  [word]
+  (let [numberEntered word]
+    (if (acceptableAnwser? numberEntered)
+      (updateBoard numberEntered)
+      (println "it didnt work"))))
 
 
 (defn -main
@@ -38,10 +57,6 @@
 (defn updateNestedVec [nestedVec x y changeTo]
   (assoc-in nestedVec [x y] changeTo))
 
-
-(defn state
-  []
-  (def currentBoard (atom (square-matrix 3 "E"))))
 
 
 (defn getAllE
@@ -61,11 +76,6 @@
    (vectorlengthEven? allE)))
 
 
-(defn getCell
-  [num]
-  (let [y (quot num 3)
-        x (- num (* y 3))]
-    (println y x)))
 
 
 
