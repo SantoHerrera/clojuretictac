@@ -1,34 +1,27 @@
 (ns tictac.core
   (:gen-class))
 
+
+(defn acceptableAnwser?
+  "returns true if its a string thats inbetween 0 - 8"
+  [answer]
+  (and
+    (= 1 (count answer));if string is only one character
+    (every? #(Character/isDigit %) answer);if character can be turned into number
+    (not= "9" answer)));
+
+
+
 (defn getInput
- []
- (println "Enter word to find definition ->")
- (flush)
- (let [wordEntered (read-line)]
-  (println (str wordEntered "this shit worked"))))
-
-(def nothingEnteredPrompt "please enter something before hitting enter :)")
-
-
-
-(defn nothingEntered [] (println nothingEnteredPrompt) (getInput))
+  []
+  (println "Enter word to find definition ->")
+  (flush)
+  (let [wordEntered (read-line)]
+    ;(if (acceptableAnwser? wordEntered)
+      (println "you thought bitch" wordEntered)))
 
 
 
-;(defn getInput
-; [])
-; (println "Enter word to find definition ->")
-; (flush)
-; (let [wordEntered (read-line)]
-;  (if (clojure.string/blank? wordEntered))
-;  (nothingEntered)
-;  (println "everything is going right" wordEntered)])
-
-
-
-(defn -maiin [& args]
-     (getInput))
 
 
 
