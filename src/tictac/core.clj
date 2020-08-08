@@ -10,7 +10,24 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)));
 
+
+
+(defn square-matrix
+  [n p]
+  (->> p (repeat n) vec (repeat n) vec))
+
+(def newState (square-matrix 3 "E"))
+
 (def state (atom (square-matrix 3 "E")))
+
+(assoc-in state [0 0] "fuck")
+
+(swap! state assoc-in [2 0] "dam") ;this works just remember to reset atom dumbass
+
+(get-in state [0])
+
+(swap! state assoc 0 "fuck")
+
 
 (defn getInput
   []
@@ -18,7 +35,7 @@
   (flush)
   (let [numberEntered (read-line)]
     (if (acceptableAnwser? numberEntered)
-      (println "you worked bitch" wordEntered)
+      ( "you worked bitch" numberEntered)
       (println "it didnt work"))))
 
 
@@ -28,11 +45,28 @@
         x (- num (* y 3))]
     (vector y x)))
 
+(defn updateNestedVec [nestedVec x y changeTo]
+  (assoc-in nestedVec [x y] changeTo))
+
+(def state2 (square-matrix 3 3))
+(println state)
+
+
+(swap! state update-in [0 0] "x")
+
+(updateNestedVec state2 0 0 "x")
+
+
 
 (defn setUp
   [num]
-  (let [number (Integer/parseInt num)
-        cellCordinates (getCell num)] cellCordinates))
+  (let ;[number (Integer/parseInt num)
+   [cellCordinates (getCell num)] cellCordinates))
+
+
+(defn updateBoard 
+  [y x changeTo]
+  (swap! state update-in [y x] (str changeTo)))
 
 
 
@@ -40,23 +74,15 @@
   [word]
   (let [numberEntered word]
     (if (acceptableAnwser? numberEntered)
-      (updateBoard numberEntered)
+      (updateBoard (Integer/parseInt word) 0 "shirworkednigga")
       (println "it didnt work"))))
 
-
-(defn -main
-  [& arfs]
-  (getInput))
+(getInputV2 "2")
 
 
-(defn square-matrix
-  [n p]
-  (->> p (repeat n) vec (repeat n) vec))
-
-
-(defn updateNestedVec [nestedVec x y changeTo]
+(defn updateNestedVec 
+  [nestedVec x y changeTo]
   (assoc-in nestedVec [x y] changeTo))
-
 
 
 (defn getAllE
@@ -68,6 +94,8 @@
   [vec]
   (even? (count vec)))
 
+(vectorlengthEven? [" 4" " 56"])
+
 
 (defn xNext?
   "takes 2d vector ex. [[1 2 3] ['E' 5 'E'] ['E' 'E' 9]]"
@@ -75,8 +103,13 @@
   (let [allE (mapcat getAllE board)]
    (vectorlengthEven? allE)))
 
-
-
+(defn nextMark
+  "takes 2d vector ex. [[1 2 3] ['E' 5 'E'] ['E' 'E' 9]]"
+  [board]
+  (let [allE (mapcat getAllE board)]
+    (if (vectorlengthEven? allE)
+      (println "X")
+      (println "O"))))
 
 
 
@@ -90,6 +123,8 @@
 ;why does this work
 (defn ik [n p]
   (->> p (repeat n) vec))
+
+
 ;and not this
 ;(defn idk [n p]
 ;  (p (repeat n) vec))

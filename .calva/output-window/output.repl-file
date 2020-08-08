@@ -1,0 +1,91 @@
+; This is the Calva evaluation results output window.
+; Leave it open, please. Because quirks.
+; TIPS: The keyboard shortcut `ctrl+alt+c o` shows and focuses this window.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Connecting ...
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: You can edit the contents here. Use it as a REPL if you like.
+;   Use `alt+enter` to evaluate the current top level form.
+;   (`ctrl+enter` evaluates the current form.)
+;   File URLs in stacktrace frames are peekable and clickable.
+; Debugger initialized
+clj::tictac.core=> 
+#'tictac.core/ik
+clj::tictac.core=> 
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:110:14).
+; Unable to resolve symbol: getAllE in this context
+#'tictac.core/vectorlengthEven?
+clj::tictac.core=> 
+clj::tictac.core=> 
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:110:14).
+; Unable to resolve symbol: getAllE in this context
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:104:14).
+; Unable to resolve symbol: getAllE in this context
+#'tictac.core/vectorlengthEven?
+clj::tictac.core=> 
+clj::tictac.core=> 
+clj::tictac.core=> 
+true
+clj::tictac.core=> 
+#'tictac.core/getAllE
+clj::tictac.core=> 
+#'tictac.core/xNext?
+clj::tictac.core=> 
+#'tictac.core/xNext?V2
+clj::tictac.core=> 
+X
+nil
+clj::tictac.core=> 
+X
+nil
+clj::tictac.core=> 
+X
+nil
+clj::tictac.core=> 
+X
+nil
+clj::tictac.core=> 
+O
+nil
+clj::tictac.core=> 
+; Syntax error reading source at (REPL:15:1).
+; EOF while reading, starting at line 15
+#'tictac.core/newState
+clj::tictac.core=> 
+clj::tictac.core=> 
+#'tictac.core/state
+clj::tictac.core=> 
+#'tictac.core/updateBoard
+clj::tictac.core=> 
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:75:9).
+; Unable to resolve symbol: acceptableAnwser? in this context
+#'tictac.core/updateBoard
+clj::tictac.core=> 
+clj::tictac.core=> 
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:75:9).
+; Unable to resolve symbol: acceptableAnwser? in this context
+#'tictac.core/acceptableAnwser?
+clj::tictac.core=> 
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (UnsupportedOperationException) at tictac.core/acceptableAnwser? (form-init2127059048498060561.clj:9).
+; count not supported on this type: Long
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:68).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+clj::tictac.core=> 
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:68).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/updateBoard
+clj::tictac.core=> 
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:69).
+; java.lang.String cannot be cast to clojure.lang.IFn
