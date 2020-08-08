@@ -13,79 +13,146 @@
 ;   File URLs in stacktrace frames are peekable and clickable.
 ; Debugger initialized
 clj::tictac.core=> 
-#'tictac.core/ik
-clj::tictac.core=> 
-; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:110:14).
-; Unable to resolve symbol: getAllE in this context
-#'tictac.core/vectorlengthEven?
-clj::tictac.core=> 
-clj::tictac.core=> 
-; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:110:14).
-; Unable to resolve symbol: getAllE in this context
-; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:104:14).
-; Unable to resolve symbol: getAllE in this context
-#'tictac.core/vectorlengthEven?
-clj::tictac.core=> 
-clj::tictac.core=> 
-clj::tictac.core=> 
-true
-clj::tictac.core=> 
 #'tictac.core/getAllE
 clj::tictac.core=> 
-#'tictac.core/xNext?
-clj::tictac.core=> 
-#'tictac.core/xNext?V2
-clj::tictac.core=> 
-X
-nil
-clj::tictac.core=> 
-X
-nil
-clj::tictac.core=> 
-X
-nil
-clj::tictac.core=> 
-X
-nil
-clj::tictac.core=> 
-O
-nil
-clj::tictac.core=> 
-; Syntax error reading source at (REPL:15:1).
-; EOF while reading, starting at line 15
-#'tictac.core/newState
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:29:9).
+; Unable to resolve symbol: acceptableAnwser? in this context
+#'tictac.core/square-matrix
 clj::tictac.core=> 
 clj::tictac.core=> 
 #'tictac.core/state
 clj::tictac.core=> 
 #'tictac.core/updateBoard
 clj::tictac.core=> 
-; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:75:9).
-; Unable to resolve symbol: acceptableAnwser? in this context
+#'tictac.core/acceptableAnwser?
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/updateBoardV2
+clj::tictac.core=> 
+clj::tictac.core=> 
+00shitworked
+nil
+clj::tictac.core=> 
+10shitworked
+nil
+clj::tictac.core=> 
+10hell yeah
+nil
+clj::tictac.core=> 
+#'tictac.core/acceptableAnwser?
+clj::tictac.core=> 
+true
+clj::tictac.core=> 
+#object[clojure.lang.Atom 0x7c10d351 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+nil
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+#object[clojure.lang.Atom 0x7c10d351 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+nil
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#object[clojure.lang.Atom 0x7c10d351 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+clj::tictac.core=> 
+nil
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
+; java.lang.String cannot be cast to clojure.lang.IFn
 #'tictac.core/updateBoard
 clj::tictac.core=> 
 clj::tictac.core=> 
-; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:75:9).
-; Unable to resolve symbol: acceptableAnwser? in this context
+#'tictac.core/acceptableAnwser?
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+#object[clojure.lang.Atom 0x7c10d351 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+nil
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Syntax error compiling at (c:\Users\Rafael Herrera\Documents\clojuretictac\src\tictac\core.clj:1:1742).
+; Can't take value of a macro: #'clojure.core/defn
 #'tictac.core/acceptableAnwser?
 clj::tictac.core=> 
 clj::tictac.core=> 
 #'tictac.core/getInputV2
 clj::tictac.core=> 
-; Execution error (UnsupportedOperationException) at tictac.core/acceptableAnwser? (form-init2127059048498060561.clj:9).
-; count not supported on this type: Long
-; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:68).
+#object[clojure.lang.Atom 0x7c10d351 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+nil
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
 ; java.lang.String cannot be cast to clojure.lang.IFn
-#'tictac.core/getInputV2
+#'tictac.core/square-matrix
 clj::tictac.core=> 
 clj::tictac.core=> 
+#'tictac.core/state
 clj::tictac.core=> 
-; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:68).
-; java.lang.String cannot be cast to clojure.lang.IFn
 #'tictac.core/updateBoard
 clj::tictac.core=> 
+#'tictac.core/updateBoardV2
+clj::tictac.core=> 
+#'tictac.core/acceptableAnwser?
+clj::tictac.core=> 
+#object[clojure.lang.Atom 0x3acd1ae4 {:status :ready, :val [[E E E] [E E E] [E E E]]}]
+nil
+clj::tictac.core=> 
+#'tictac.core/acceptableAnwser?
 clj::tictac.core=> 
 #'tictac.core/getInputV2
 clj::tictac.core=> 
-; Execution error (ClassCastException) at tictac.core/updateBoard (form-init2127059048498060561.clj:69).
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
 ; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+clj::tictac.core=> 
+00shirworkednigga
+nil
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+20shirworkednigga
+nil
+clj::tictac.core=> 
+it didnt work
+nil
+clj::tictac.core=> 
+20shirworkednigga
+nil
+clj::tictac.core=> 
+#'tictac.core/updateBoard
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+; Execution error (ClassCastException) at tictac.core/updateBoard (form-init6276657434778300722.clj:14).
+; java.lang.String cannot be cast to clojure.lang.IFn
+#'tictac.core/updateBoardV3
+clj::tictac.core=> 
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+2 0 shirworkednigga
+nil
+clj::tictac.core=> 
+#'tictac.core/updateBoardV3
+clj::tictac.core=> 
+#'tictac.core/getInputV2
+clj::tictac.core=> 
+#object[clojure.lang.Atom 0x3acd1ae4 {:status :ready, :val [[E E E] [E E E] [E E E]]}] 2 0 shirworkednigga
+nil
+clj::tictac.core=> 
+; nREPL Connection was closed

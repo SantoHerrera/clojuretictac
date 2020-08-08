@@ -1,6 +1,28 @@
 (ns tictac.core
   (:gen-class))
 
+(defn square-matrix
+  [n p]
+  (->> p (repeat n) vec (repeat n) vec))
+
+
+(def state (atom (square-matrix 3 "E")))
+
+
+(defn updateBoard 
+  [y x changeTo]
+  (swap! state update-in [y x] changeTo))
+
+(defn updateBoardV2 
+  [y x changeTo]
+  (println 
+   (str y x changeTo)))
+
+(defn updateBoardV3 
+  [y x changeTo]
+  (println state y x changeTo))
+
+
 
 (defn acceptableAnwser?
   "returns true if its a string digit thats between 0 - 8"
@@ -12,31 +34,44 @@
 
 
 
-(defn square-matrix
-  [n p]
-  (->> p (repeat n) vec (repeat n) vec))
+
+
+(println state)
+
+
+
+
+(defn getInputV2
+  [word]
+  (if (acceptableAnwser? word)
+        (updateBoardV3 word 0 "shirworkednigga")
+        (println "it didnt work")))
+
+
+(getInputV2 "2")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (def newState (square-matrix 3 "E"))
 
-(def state (atom (square-matrix 3 "E")))
-
-(assoc-in state [0 0] "fuck")
 
 (swap! state assoc-in [2 0] "dam") ;this works just remember to reset atom dumbass
 
-(get-in state [0])
-
-(swap! state assoc 0 "fuck")
 
 
-(defn getInput
-  []
-  (println "Enter word to find definition ->")
-  (flush)
-  (let [numberEntered (read-line)]
-    (if (acceptableAnwser? numberEntered)
-      ( "you worked bitch" numberEntered)
-      (println "it didnt work"))))
 
 
 (defn getCell
@@ -49,12 +84,10 @@
   (assoc-in nestedVec [x y] changeTo))
 
 (def state2 (square-matrix 3 3))
-(println state)
 
+;this works
+;(swap! state update-in [0 0] "x")
 
-(swap! state update-in [0 0] "x")
-
-(updateNestedVec state2 0 0 "x")
 
 
 
@@ -64,20 +97,9 @@
    [cellCordinates (getCell num)] cellCordinates))
 
 
-(defn updateBoard 
-  [y x changeTo]
-  (swap! state update-in [y x] (str changeTo)))
 
 
 
-(defn getInputV2
-  [word]
-  (let [numberEntered word]
-    (if (acceptableAnwser? numberEntered)
-      (updateBoard (Integer/parseInt word) 0 "shirworkednigga")
-      (println "it didnt work"))))
-
-(getInputV2 "2")
 
 
 (defn updateNestedVec 
@@ -94,7 +116,6 @@
   [vec]
   (even? (count vec)))
 
-(vectorlengthEven? [" 4" " 56"])
 
 
 (defn xNext?
@@ -129,3 +150,14 @@
 ;(defn idk [n p]
 ;  (p (repeat n) vec))
 ;(idk 3 3)
+
+
+;; the one that runs from command prompt 
+;; (defn getInput
+;;   []
+;;   (println "Enter word to find definition ->")
+;;   (flush)
+;;   (let [numberEntered (read-line)]
+;;     (if (acceptableAnwser? numberEntered)
+;;       (println "you worked bitch" numberEntered)
+;;       (println "it didnt work"))))
