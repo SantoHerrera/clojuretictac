@@ -13,23 +13,28 @@
   [n p]
   (->> p (repeat n) vec (repeat n) vec))
 
-(def state (atom (square-matrix 3 "E")))
+(def newState [[0 1 2] [3 4 5] [6 7 8]])
 
-(defn vectorlengthEven?
-  [vec]
-  (even? (count vec)))
 
-(defn getAllE
+; (def state (atom (square-matrix 3 "E")))
+(def state (atom newState))
+
+
+
+(defn getNumbers
   [vec]
-  (filter (fn [x] (= "E" x) ) vec))
+  (filter integer? vec))
+
 
 (defn nextMark
-  "takes 2d vector ex. [[1 2 3] ['E' 5 'E'] ['E' 'E' 9]]"
+  "takes 2d vector ex. [[1 2 3] ['x' 5 'o'] ['x' 'o' 9]]"
   [board]
-  (let [allE (mapcat getAllE board)]
-    (if (vectorlengthEven? allE)
-      (str "X")
-      (str "O"))))
+  (let [allNums (mapcat getNumbers board)]
+      (if (even? (count allNums))
+        (str "O")
+        (str "X"))))
+
+
 
 (defn getCell
   [num]
@@ -66,7 +71,7 @@
 
 
 
-
+(getInput "8")
 
 
 
@@ -126,10 +131,13 @@
 
 (has-horizontal-winner? (board-width board) board)
 
-(has-winner? ["x" "x" "x"])
+(has-winner? ["x" "x" "o" 3 4 5 6 "o" "o"])
 
 
 
+;what to do
+;make state into [[0 1 2] [3 4 5] [6 7 8]]
+; instead of being filled with E's
 
 
 
