@@ -52,7 +52,9 @@
         y (get-in cellCordinates [0])
         x (get-in cellCordinates [1])
         mark (nextMark @state)]
-    (updateBoard y x mark)))
+    (updateBoard y x mark))
+  (println "at the end this gets called too" state (has-winner? @state)))
+
 
 (defn acceptableAnwser?
   "returns true if its a string digit thats between 0 - 8"
@@ -71,7 +73,7 @@
 
 
 
-(getInput "8")
+(getInput "6")
 
 
 
@@ -123,16 +125,9 @@
              (or (has-horizontal-winner? width board);lit
                  (has-vertical-winner? width board)))));nice
 
-
-(def board ["x" "x" "x" 3 4 5 6 "o" "o"])
-
-(< (count (valid-moves board)) 5)
-
-
-(has-horizontal-winner? (board-width board) board)
-
-(has-winner? ["x" "x" "o" 3 4 5 6 "o" "o"])
-
+;this one works
+;clean this up and plug into line 124
+(reduce + (into [] (map count (map valid-moves @state))))
 
 
 ;what to do
