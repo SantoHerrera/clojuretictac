@@ -9,6 +9,7 @@
 ;if you want to go and read the original.
 
 
+
 (defn square-matrix
   [n p]
   (->> p (repeat n) vec (repeat n) vec))
@@ -40,11 +41,40 @@
   [num]
   (let [y (quot num 3)
         x (- num (* y 3))]
-    (vector y x)))
+    (vector y x)
 
 (defn updateBoard
   [y x changeTo]
   (swap! state assoc-in [y x] changeTo))
+
+
+(defn contains-same-pieces
+  [coll]
+  (apply = coll))
+
+
+
+(defn hasHorizontalWinner?
+  [board]
+  (some true? (map contains-same-pieces board)))
+
+(defn hasVerticalWinner?
+  [board]
+  (some true? (map contains-same-pieces (apply map vector board))))
+
+
+(defn valid-moves
+  [board]
+  (filter integer? board))
+
+
+
+(defn hasWinner?
+  [board]
+  (and (< (count (mapcat valid-moves board)) 5)
+       (or (hasHorizontalWinner? board)
+           (hasVerticalWinner? board))))
+
 
 (defn game
   [num]
@@ -53,7 +83,7 @@
         x (get-in cellCordinates [1])
         mark (nextMark @state)]
     (updateBoard y x mark))
-  (println "at the end this gets called too" state (has-winner? @state)))
+  (println "at the end this gets called too" state (hasWinner? @state)))
 
 
 (defn acceptableAnwser?
@@ -62,7 +92,7 @@
   (and
     (= 1 (count answer));if string is only one character
     (every? #(Character/isDigit %) answer);if character can be turned into number
-    (not= "9" answer)));
+    (not= "9" answer);
 
 (defn getInput
   [word]
@@ -73,61 +103,25 @@
 
 
 
-(getInput "6")
 
 
 
 
-(defn contains-same-pieces
-  [coll]
-  (apply = coll))
-
-
-
-(defn has-winner-from-separation?
-  [separated-coll]
-  (some true? (map contains-same-pieces separated-coll)))
-
-(defn separate-into-rows
-  [width board]
-  (partition width board))
-
-
-(defn has-horizontal-winner?
-  [width board]
-  (has-winner-from-separation? (separate-into-rows width board)))
-
-(defn separate-into-columns
-  [width board]
-  (apply map vector (separate-into-rows width board)))
-
-
-(defn has-vertical-winner? [width board]
-    (has-winner-from-separation? (separate-into-columns width board)))
 
 
 
 
-(defn board-width
-   [board]
-   (int (Math/sqrt (count board))))
-
-(defn valid-moves
-  [board]
-  (filter integer? board))
 
 
-(defn has-winner?
-   [board]
-;board -> [1 2 3 4 5 x o 8 9]
-   (let [width (board-width board)]
-        (and (< (count (valid-moves board)) 5) ;im guessing its becuase no one could win with less than 5 pieces on board
-             (or (has-horizontal-winner? width board);lit
-                 (has-vertical-winner? width board)))));nice
+; (defn hasWinner?
+;   [board]
+;   (and (< (count (mapcat valid-moves board)) 5)
+;        (or (hasHorizontalWinner? board)
+;            (hasVerticalWinner? boar))))
 
-;this one works
-;clean this up and plug into line 124
-(reduce + (into [] (map count (map valid-moves @state))))
+;todo
+;move the let block inside game function into updateBoard funciton
+
 
 
 ;what to do
