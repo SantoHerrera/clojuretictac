@@ -41,7 +41,7 @@
   [num]
   (let [y (quot num 3)
         x (- num (* y 3))]
-    (vector y x)
+    (vector y x)))
 
 (defn updateBoard
   [y x changeTo]
@@ -51,6 +51,20 @@
 (defn contains-same-pieces
   [coll]
   (apply = coll))
+
+
+
+
+(defn diagonalWinner?
+  [board]
+  (let [[r1 r2 r3] board
+        [zero one two] r1
+        [three four] r2
+        [six seven eight] r3]
+    (or (contains-same-pieces (vector zero four eight))
+        (contains-same-pieces (vector two four six)))))
+
+
 
 
 
@@ -73,8 +87,8 @@
   [board]
   (and (< (count (mapcat valid-moves board)) 5)
        (or (hasHorizontalWinner? board)
-           (hasVerticalWinner? board))))
-
+           (hasVerticalWinner? board)
+           (diagonalWinner? board))))
 
 (defn game
   [num]
@@ -92,7 +106,7 @@
   (and
     (= 1 (count answer));if string is only one character
     (every? #(Character/isDigit %) answer);if character can be turned into number
-    (not= "9" answer);
+    (not= "9" answer)))
 
 (defn getInput
   [word]
@@ -103,14 +117,7 @@
 
 
 
-
-
-
-
-
-
-
-
+;2 and 6 aswell
 
 
 ; (defn hasWinner?
@@ -155,8 +162,8 @@
 
 
 ;why does this work
-(defn ik [n p]
-  (->> p (repeat n) vec))
+; (defn ik [n p]
+;   (->> p (repeat n) vec))
 
 
 ;and not this
