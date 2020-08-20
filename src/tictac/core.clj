@@ -10,6 +10,7 @@
 
 
 
+
 (defn square-matrix
   [n p]
   (->> p (repeat n) vec (repeat n) vec))
@@ -42,10 +43,6 @@
   (let [y (quot num 3)
         x (- num (* y 3))]
     (vector y x)))
-
-(defn updateBoard
-  [y x changeTo]
-  (swap! state assoc-in [y x] changeTo))
 
 
 (defn contains-same-pieces
@@ -90,13 +87,20 @@
            (hasVerticalWinner? board)
            (diagonalWinner? board))))
 
-(defn game
-  [num]
+
+(defn updateBoard
+  [num mark]
   (let [cellCordinates (getCell num)
         y (get-in cellCordinates [0])
-        x (get-in cellCordinates [1])
-        mark (nextMark @state)]
-    (updateBoard y x mark))
+        x (get-in cellCordinates [1])]
+    (if (number? (get-in @state [y x]))
+       (swap! state assoc-in [y x] mark)
+       (println state "fuck"))))
+
+
+(defn game
+  [num]
+  (updateBoard num (nextMark @state))
   (println "at the end this gets called too" state (hasWinner? @state)))
 
 
@@ -115,7 +119,7 @@
       (println "it didnt work")))
 
 
-
+(getInput "5")
 
 ;2 and 6 aswell
 
