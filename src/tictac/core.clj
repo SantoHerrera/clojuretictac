@@ -1,6 +1,8 @@
 (ns tictac.core
   (:gen-class))
 
+(use 'clojure.pprint)
+
 ;https://github.com/tbaik/clojure-ttt
 ;the ttt version I read before making this.
 ;I read it, liked it. Tried to forget it.
@@ -10,6 +12,7 @@
 
 
 
+(declare getInput)
 
 (defn square-matrix
   [n p]
@@ -101,7 +104,7 @@
 (defn game
   [num]
   (updateBoard num (nextMark @state))
-  (println "at the end this gets called too" state (hasWinner? @state)))
+  (getInput))
 
 
 (defn acceptableAnwser?
@@ -112,14 +115,35 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)))
 
-(defn getInput
+(defn getInputTest
   [word]
   (if (acceptableAnwser? word)
       (game (Integer/parseInt word))
       (println "it didnt work")))
 
 
-(getInput "5")
+
+(defn getInput
+  []
+  (println "choose cell " state)
+  (flush)
+  (let [numberEntered (read-line)]
+    (if (acceptableAnwser? numberEntered)
+      (game (Integer/parseInt numberEntered))
+      (println "it didnt work"))))
+
+
+(defn -main
+  [& args]
+  (getInput))
+
+(defn value-row-string [value-coll]
+  (str (reduce str (for [value value-coll] (str "  " value "  |"))) "\n"))
+
+
+
+(str (value-row-string [0 1 2  3 4 56 7 8]))
+
 
 ;2 and 6 aswell
 
@@ -174,14 +198,3 @@
 ;(defn idk [n p]
 ;  (p (repeat n) vec))
 ;(idk 3 3)
-
-
-;; the one that runs from command prompt
-;; (defn getInput
-;;   []
-;;   (println "Enter word to find definition ->")
-;;   (flush)
-;;   (let [numberEntered (read-line)]
-;;     (if (acceptableAnwser? numberEntered)
-;;       (println "you worked bitch" numberEntered)
-;;       (println "it didnt work"))))
