@@ -83,13 +83,14 @@
 
 
 
+
 (defn hasWinner?
   [board]
   (and (< (count (mapcat valid-moves board)) 5)
        (or (hasHorizontalWinner? board)
            (hasVerticalWinner? board)
            (diagonalWinner? board))))
-
+(hasWinner? [["x" "o" "x"] ["o" "x" "o"] [6 7 8]])
 
 (defn updateBoard
   [num mark]
@@ -98,13 +99,91 @@
         x (get-in cellCordinates [1])]
     (if (number? (get-in @state [y x]))
        (swap! state assoc-in [y x] mark)
-       (println state "fuck"))))
+       (getInput "choose empty cell"))))
+
+; (defn test
+;   [num]
+;   (cond (winner?) (do (println "ohhh") (println "yeah"))
+;         (= 9 num) (println "fuck")
+;         (> 0) (println "last")))
+
+(defn movesAvailable
+  [board]
+  (count (mapcat valid-moves board)))
+
+
+
+(defn gameV2
+  [num]
+  (updateBoard num (nextMark @state))
+  (hasWinner? @state)
+  (getInput))
+
+
+(defn exitGame?
+  [booleen]
+  (and (= "e" booleen) (System/exit 0)))
+
+
+;take away the do's and see if hasWinner still returns true
+(defn gameOriginal
+  [num]
+  (updateBoard num (nextMark @state))
+  (cond
+    (hasWinner? @state)
+    (do (println (str "player " (nextMark @state) "has won"))
+        (exitGame? "e"))
+    (= 0 (movesAvailable @state))
+    (do (println "nobody won. run program to play again")
+        (exitGame? "e")))
+  (getInput))
 
 
 (defn game
   [num]
-  (updateBoard num (nextMark @state))
-  (getInput))
+  (let [currentMark (nextMark @state)]
+    (updateBoard num currentMark)
+    (cond
+      (hasWinner? @state)
+      (do (println (str "player " currentMark "has won"))
+          (exitGame? "e"))
+      (= 0 (movesAvailable @state))
+      (do (println "nobody won. run program to play again")
+          (exitGame? "e"))))
+ (getInput))
+
+
+
+
+
+
+;make it accept board and spit it out insead of using it head?
+(defn updateBoardv2
+  [num mark board]
+  (let [cellCordinates (getCell num)
+        y (get-in cellCordinates [0])
+        x (get-in cellCordinates [1])]
+    (if (number? (get-in board [y x]))
+        (swap! board assoc-in [y x] mark)
+        (println "choose empty cell"))))
+
+
+;(def board [[0 1 2] [3 4 5] [6 7 8]])
+
+; ;
+; (defn gamev3
+;   [num board]
+;   (let [currentMark (nextMark board)]
+;    (updateBoardv2 num currentMark board)
+;    (cond
+;      (hasWinner? board)
+;      (println (str "player" (nextMark board) "has Won"))
+;      (= 0 (movesAvailable board))
+;      (println "nobody won run again to play"))))
+;
+; (gamev3 7 [["x" "o" "x"] ["o" "x" "o"] ["x" 7 8]])
+
+
 
 
 (defn acceptableAnwser?
@@ -115,34 +194,56 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)))
 
-(defn getInputTest
-  [word]
-  (if (acceptableAnwser? word)
-      (game (Integer/parseInt word))
-      (println "it didnt work")))
-
 
 
 (defn getInput
-  []
-  (println "choose cell " state)
-  (flush)
-  (let [numberEntered (read-line)]
-    (if (acceptableAnwser? numberEntered)
-      (game (Integer/parseInt numberEntered))
-      (println "it didnt work"))))
+  ([] (println "choose cell " state)
+   (flush)
+   (let [numberEntered (read-line)]
+     (exitGame? numberEntered)
+     (if (acceptableAnwser? numberEntered)
+       (game (Integer/parseInt numberEntered))
+       (getInput "please type cell number, e - exit game"))))
+  ([message] (println message)
+   (getInput)))
 
 
 (defn -main
   [& args]
   (getInput))
 
-(defn value-row-string [value-coll]
-  (str (reduce str (for [value value-coll] (str "  " value "  |"))) "\n"))
 
 
 
-(str (value-row-string [0 1 2  3 4 56 7 8]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ;2 and 6 aswell
@@ -164,20 +265,33 @@
 ; instead of being filled with E's
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;
+;
+; (let [xWon true]
+;   (case xWon
+;     true (println "won" (nextMark @state))
+;     false (println "lost like a mtfka")))
+;
+;
+; (defn test
+;   [num]
+;   (cond->> num
+;     (= 9 num) (getInput "why doesnt this workf")
+;     (> num 99) (println "not his")
+;     true (println "thous")))
+;
+; (test 9)
+;
+;
+;
+; (cond-> 9
+;   true inc
+;   true inc
+;   false (* 8)
+;   true (* 7))
+;
+;
+;
 
 
 
