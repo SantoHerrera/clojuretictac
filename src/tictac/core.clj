@@ -71,6 +71,10 @@
            (hasVerticalWinner? board)
            (diagonalWinner? board))))
 
+(defn movesAvailable
+ [board]
+ (count (mapcat valid-moves board)))
+
 (defn updateBoard
   [num mark]
   (let [cellCordinates (getCell num)
@@ -80,14 +84,10 @@
        (swap! state assoc-in [y x] mark)
        (getInput "choose empty cell"))))
 
-(defn movesAvailable
-  [board]
-  (count (mapcat valid-moves board)))
 
-(defn exitGame?
-  [booleen]
-  (and (= "e" booleen) (System/exit 0)))
-
+;todo
+;take off currentmark, or let function
+;and just run nextmark where currentmark is at
 (defn game
   [num]
   (let [currentMark (nextMark @state)]
@@ -96,7 +96,7 @@
       (hasWinner? @state)
       (do (println (str "player " currentMark "has won"))
           (exitGame? "e"))
-      (= 0 (movesAvailable @state))
+      (= (movesAvailable @state) 0)
       (do (println "nobody won. run program to play again")
           (exitGame? "e"))))
  (getInput))
@@ -109,13 +109,18 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)))
 
+
+(defn exitGame?
+  [lowerCaseE]
+  (and (= "e" lowerCaseE) (System/exit 0)))
+
 (defn getInput
   ([] (println "choose cell " state)
    (flush)
-   (let [numberEntered (read-line)]
-     (exitGame? numberEntered)
-     (if (acceptableAnwser? numberEntered)
-       (game (Integer/parseInt numberEntered))
+   (let [userInput (read-line)]
+     (exitGame? userInput)
+     (if (acceptableAnwser? userInput)
+       (game (Integer/parseInt userInput))
        (getInput "please type cell number, e - exit game"))))
   ([message] (println message)
    (getInput)))
@@ -123,10 +128,6 @@
 (defn -main
   [& args]
   (getInput))
-
-
-
-
 
 
 ;why does this work
