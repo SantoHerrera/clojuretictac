@@ -1,21 +1,18 @@
 (ns tictac.core
   (:gen-class))
 
-(use 'clojure.pprint)
-
 ;https://github.com/tbaik/clojure-ttt
-;the ttt version I read before making this.
+;the tictactoe version I read before making this.
 ;I read it, liked it. Tried to forget it.
 ;then wrote this.
-;I guessing they are very similer.
+;I'm guessing they are very similer.
 ;if you want to go and read the original.
 
+;should I avoid using declare?
 
 (declare getInput)
 
-(defn square-matrix
-  [n p]
-  (->> p (repeat n) vec (repeat n) vec))
+(declare exitGame?)
 
 (def newState [[0 1 2] [3 4 5] [6 7 8]])
 
@@ -42,7 +39,8 @@
 (defn contains-same-pieces
   [coll]
   (apply = coll))
-
+  
+;this is ugly, make better
 (defn diagonalWinner?
   [board]
   (let [[r1 r2 r3] board
@@ -84,10 +82,8 @@
        (swap! state assoc-in [y x] mark)
        (getInput "choose empty cell"))))
 
-
-;todo
-;take off currentmark, or let function
-;and just run nextmark where currentmark is at
+;reason for let is so that it fixes
+; situations like -> X wins but prints O has won
 (defn game
   [num]
   (let [currentMark (nextMark @state)]
@@ -109,13 +105,18 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)))
 
-
 (defn exitGame?
   [lowerCaseE]
   (and (= "e" lowerCaseE) (System/exit 0)))
 
+(defn printBoard
+  [board]
+  (doseq [a board]
+   (println a)))
+
 (defn getInput
-  ([] (println "choose cell " state)
+  ([] (println "choose cell ")
+   (printBoard @state)
    (flush)
    (let [userInput (read-line)]
      (exitGame? userInput)
@@ -130,12 +131,8 @@
   (getInput))
 
 
-;why does this work
-; (defn ik [n p]
-;   (->> p (repeat n) vec))
-
-
-;and not this
-;(defn idk [n p]
-;  (p (repeat n) vec))
-;(idk 3 3)
+;wtf does this do?
+; (defmacro declare
+;   "defs the supplied var names with no bindings, useful for making forward declarations."
+;   {:added "1.0"}
+;   [& names] `(do ~@(map #(list 'def (vary-meta % assoc :declared true)) names)))
