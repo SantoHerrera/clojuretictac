@@ -39,7 +39,7 @@
 (defn contains-same-pieces
   [coll]
   (apply = coll))
-  
+
 ;this is ugly, make better
 (defn diagonalWinner?
   [board]
@@ -49,6 +49,21 @@
         [six seven eight] r3]
     (or (contains-same-pieces (vector zero four eight))
         (contains-same-pieces (vector two four six)))))
+
+(def boardTest [[0 1 2] [3 4 5] [6 7 8]])
+
+(defn diagonalWinnerNew
+  [board]
+  (let [[r1 r2 r3] board
+        [zero one two] r1
+        [three four] r2
+        [six seven eight] r3]
+    (or (= (vector zero four eight))
+        (= (vector two four six)))))
+
+(apply = (vector "x" "x" "x"))
+
+(diagonalWinnerNew boardTest)
 
 (defn hasHorizontalWinner?
   [board]
@@ -129,6 +144,129 @@
 (defn -main
   [& args]
   (getInput))
+
+
+
+
+;
+; ;try this
+; ;game is state
+; (loop [game (new-game)]
+;   (print-board game)
+;   (let [action (read-action)]
+;     (if (exit-game? action)
+;       (get-winner game)
+;       (recur (update-game game action)))))
+;
+;
+;
+;
+;
+; (loop [game (new-game)]
+;   (print-board game)
+;   (let [action (read-action)]
+;     (exitGame? action)
+;     (if (has-winner action)
+;       (println "player " (next-mark) "has won")
+;       (recur (update-game game action)))))
+;
+;
+;
+;
+;
+
+; (defn updateBoard
+;   [num mark]
+;   (let [cellCordinates (getCell num)
+;         y (get-in cellCordinates [0])
+;         x (get-in cellCordinates [1])]
+;     (if (number? (get-in @state [y x]))
+;        (swap! state assoc-in [y x] mark)
+;        (getInput "choose empty cell"))))
+
+(def board-test [[0 1 2] [3 4 5] [6 7 8]])
+;refactor this
+(defn update-board
+  [num mark board]
+  (if (number? (get-in board (getCell num)))
+    (assoc-in board (getCell num) mark)
+    board))
+
+(update-board 6 "O" board-test)
+
+; plug this in
+(defn new-game
+  []
+  (loop [game newState
+         moves-available (movesAvailable game)]
+    (println game)
+    (if (= 0 moves-available)
+      (println "nobody fucking won")
+      (recur (update-board moves-available "XZ" game) (dec moves-available)))))
+
+(defn new-gameV2
+  []
+  (let [game newState
+         moves-available (movesAvailable game)]
+      (println game)))
+
+
+
+
+(defn new-gameV3
+  []
+  (loop [game newState
+         moves-available (movesAvailable game)]
+    (if (= 0 moves-available)
+      (println "nobody fucking won")
+      (recur (println moves-available) (dec moves-available)))))
+
+
+
+
+
+
+(defn game-new
+  [input]
+  (loop [answer input]
+    (if (= "e" answer)
+      (println "exits game")
+      (recur (userInput)))))
+
+;
+; Integer/parseInt userInput
+
+
+
+
+
+(defn userInput
+  []
+  (let [input (read-line)]
+    input))
+
+
+
+
+
+
+
+;todo
+;make exit game but without exiting vm, and shutting down the vm
+
+
+
+
+(defn fact [x]
+  (loop [n x prod 1] ;; this works just like a 'let' binding.
+    (if (= 1 n)  ;; this is the base case.
+      prod
+      (recur (dec n) (* prod n)))))
+;
+
+
+
+
 
 
 ;wtf does this do?
