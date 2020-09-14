@@ -192,38 +192,19 @@
     (assoc-in board (getCell num) mark)
     board))
 
+
+
 (update-board 6 "O" board-test)
 
 ; plug this in
-(defn new-game
+1(defn new-game
   []
   (loop [game newState
          moves-available (movesAvailable game)]
     (println game)
-    (if (= 0 moves-available)
+    (if (= 0 (movesAvailable game))
       (println "nobody fucking won")
-      (recur (update-board moves-available "XZ" game) (dec moves-available)))))
-
-(defn new-gameV2
-  []
-  (let [game newState
-         moves-available (movesAvailable game)]
-      (println game)))
-
-
-
-
-(defn new-gameV3
-  []
-  (loop [game newState
-         moves-available (movesAvailable game)]
-    (if (= 0 moves-available)
-      (println "nobody fucking won")
-      (recur (println moves-available) (dec moves-available)))))
-
-
-
-
+      (recur (update-board (Integer/parseInt (userInput)) (nextMark game) game) (dec moves-available)))))
 
 
 (defn game-new
@@ -236,6 +217,10 @@
 ;
 ; Integer/parseInt userInput
 
+;the problem; if you just tap one cell,
+;it keeps suptracting moves-available
+;
+;tapping one square after 9 clicks makes (println "nobody fucking won")
 
 
 
