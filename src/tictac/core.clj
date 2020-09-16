@@ -50,8 +50,6 @@
     (or (contains-same-pieces (vector zero four eight))
         (contains-same-pieces (vector two four six)))))
 
-(def boardTest [[0 1 2] [3 4 5] [6 7 8]])
-
 (defn diagonalWinnerNew
   [board]
   (let [[r1 r2 r3] board
@@ -60,10 +58,6 @@
         [six seven eight] r3]
     (or (= (vector zero four eight))
         (= (vector two four six)))))
-
-(apply = (vector "x" "x" "x"))
-
-(diagonalWinnerNew boardTest)
 
 (defn hasHorizontalWinner?
   [board]
@@ -88,29 +82,6 @@
  [board]
  (count (mapcat valid-moves board)))
 
-(defn updateBoard
-  [num mark]
-  (let [cellCordinates (getCell num)
-        y (get-in cellCordinates [0])
-        x (get-in cellCordinates [1])]
-    (if (number? (get-in @state [y x]))
-       (swap! state assoc-in [y x] mark)
-       (getInput "choose empty cell"))))
-
-;reason for let is so that it fixes
-; situations like -> X wins but prints O has won
-(defn game
-  [num]
-  (let [currentMark (nextMark @state)]
-    (updateBoard num currentMark)
-    (cond
-      (hasWinner? @state)
-      (do (println (str "player " currentMark "has won"))
-          (exitGame? "e"))
-      (= (movesAvailable @state) 0)
-      (do (println "nobody won. run program to play again")
-          (exitGame? "e"))))
- (getInput))
 
 (defn acceptableAnwser?
   "returns true if its a string digit thats between 0 - 8"
@@ -129,108 +100,116 @@
   (doseq [a board]
    (println a)))
 
-(defn getInput
-  ([] (println "choose cell ")
-   (printBoard @state)
-   (flush)
-   (let [userInput (read-line)]
-     (exitGame? userInput)
-     (if (acceptableAnwser? userInput)
-       (game (Integer/parseInt userInput))
-       (getInput "please type cell number, e - exit game"))))
-  ([message] (println message)
-   (getInput)))
 
-(defn -main
-  [& args]
-  (getInput))
-
-
-
-
-;
-; ;try this
-; ;game is state
-; (loop [game (new-game)]
-;   (print-board game)
-;   (let [action (read-action)]
-;     (if (exit-game? action)
-;       (get-winner game)
-;       (recur (update-game game action)))))
-;
-;
-;
-;
-;
-; (loop [game (new-game)]
-;   (print-board game)
-;   (let [action (read-action)]
-;     (exitGame? action)
-;     (if (has-winner action)
-;       (println "player " (next-mark) "has won")
-;       (recur (update-game game action)))))
-;
-;
-;
-;
-;
-
-; (defn updateBoard
-;   [num mark]
-;   (let [cellCordinates (getCell num)
-;         y (get-in cellCordinates [0])
-;         x (get-in cellCordinates [1])]
-;     (if (number? (get-in @state [y x]))
-;        (swap! state assoc-in [y x] mark)
-;        (getInput "choose empty cell"))))
-
-(def board-test [[0 1 2] [3 4 5] [6 7 8]])
-;refactor this
 (defn update-board
   [num mark board]
   (if (number? (get-in board (getCell num)))
     (assoc-in board (getCell num) mark)
     board))
 
+(defn get-input
+  ([]
+   (let [input (read-line)]
+    (if (acceptableAnwser? input)
+     input
+     (get-input "please type only cell number"))))
+  ([message]
+   (println message)
+   (get-input)))
 
-
-(update-board 6 "O" board-test)
-
-; plug this in
-1(defn new-game
+; instead of if do condition
+;cond
+;hasWinner?
+;(= 0 (movesAvailable game)
+;user Input "e" - go ahead and exit game
+(defn new-game
   []
   (loop [game newState
          moves-available (movesAvailable game)]
-    (println game)
+    (printBoard game)
     (if (= 0 (movesAvailable game))
       (println "nobody fucking won")
-      (recur (update-board (Integer/parseInt (userInput)) (nextMark game) game) (dec moves-available)))))
+      (recur (update-board (Integer/parseInt (get-input)) (nextMark game) game) (dec moves-available)))))
+
+(defn exit-game?
+  [lower-case-e]
+  (= "e" lower-case-e))
 
 
-(defn game-new
-  [input]
-  (loop [answer input]
-    (if (= "e" answer)
-      (println "exits game")
-      (recur (userInput)))))
-
-;
-; Integer/parseInt userInput
-
-;the problem; if you just tap one cell,
-;it keeps suptracting moves-available
-;
-;tapping one square after 9 clicks makes (println "nobody fucking won")
-
-
-
-
-(defn userInput
+(defn exit-game
   []
-  (let [input (read-line)]
-    input))
+  (System/exit 0))
+
+;what i need to do is make it so that it only asks for input once
+;where though
+;
+;
+(defn new-gameV2
+  []
+  (loop [input (read-line)
+         game newState
+         moves-available (movesAvailable game)]
+    (printBoard game)
+    (cond
+      (exit-game? input) (exit-game)
+      (hasWinner? game) (println "fuck yeah youve won ")
+      (= 0 (movesAvailable game)) (println "nobody fucking won"))
+    (recur (read-line) (update-board (Integer/parseInt input) (nextMark game) game) (dec moves-available))))
+;
+; (def input (flush) (read-line))
+
+(defn new-gameV3
+  []
+  (loop [all-inputs []
+         game newState
+         moves-available (movesAvailable game)]
+    (printBoard game)
+    (let [current-input (read-line)]
+      (cond
+        (exit-game? current-input) (exit-game)
+        (hasWinner? game) (println "fuck yeah youve won ")
+        (= 0 (movesAvailable game)) (println "nobody fucking won"))
+      (recur (conj all-inputs current-input) (update-board (Integer/parseInt current-input) (nextMark game) game) (dec moves-available)))))
 
 
+
+(defn readLines
+  []
+  (loop [lines []]
+    (let [current-line (read-line)]
+     (if (= current-line "")
+      (println lines)
+      (recur (conj lines current-line))))))
+
+
+
+
+
+(defn -main
+  [& args]
+  (new-gameV2))
+
+
+;if you enter a letter it breaks
+
+
+
+
+;NEED TO printboard in command line after acceptableAnwser? fails
+
+
+; ;need to if user enters e call exit game
+;
+; reason for let is so that it fixes
+; situations like -> X wins but prints O has won
+
+
+
+
+
+;clean up
+
+;make it be able to run in lein run in command prompt
 
 
 
@@ -241,21 +220,32 @@
 
 
 
+; (defn getInput
+;   ([] (println "choose cell ")
+;    (printBoard @state)
+;    (flush)
+;    (let [userInput (read-line)]
+;      (exitGame? userInput)
+;      (if (acceptableAnwser? userInput)
+;        (game (Integer/parseInt userInput))
+;        (getInput "please type cell number, e - exit game"))))
+;   ([message] (println message)
+;    (getInput)))
 
-(defn fact [x]
-  (loop [n x prod 1] ;; this works just like a 'let' binding.
-    (if (= 1 n)  ;; this is the base case.
-      prod
-      (recur (dec n) (* prod n)))))
-;
 
 
 
-
-
-
-;wtf does this do?
-; (defmacro declare
-;   "defs the supplied var names with no bindings, useful for making forward declarations."
-;   {:added "1.0"}
-;   [& names] `(do ~@(map #(list 'def (vary-meta % assoc :declared true)) names)))
+;reason for let is so that it fixes
+; situations like -> X wins but prints O has won
+; (defn game
+;   [num]
+;   (let [currentMark (nextMark @state)]
+;     (updateBoard num currentMark)
+;     (cond
+;       (hasWinner? @state)
+;       (do (println (str "player " currentMark "has won"))
+;           (exitGame? "e"))
+;       (= (movesAvailable @state) 0)
+;       (do (println "nobody won. run program to play again")
+;           (exitGame? "e"))))
+;  (getInput))
