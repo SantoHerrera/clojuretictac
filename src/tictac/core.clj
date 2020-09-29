@@ -10,27 +10,21 @@
 
 ;should I avoid using declare?
 
-(declare getInput)
-
-(declare exitGame?)
-
 (def newState [[0 1 2] [3 4 5] [6 7 8]])
 
-(def state (atom newState))
-
-(defn getNumbers
+(defn get-numbers
   [vec]
   (filter integer? vec))
 
-(defn nextMark
+(defn next-mark
   "takes 2d vector ex. [[1 2 3] ['x' 5 'o'] ['x' 'o' 9]]"
   [board]
-  (let [allNums (mapcat getNumbers board)]
+  (let [allNums (mapcat get-numbers board)]
       (if (even? (count allNums))
         (str "O")
         (str "X"))))
 
-(defn getCell
+(defn get-cell
   [num]
   (let [y (quot num 3)
         x (- num (* y 3))]
@@ -41,16 +35,7 @@
   (apply = coll))
 
 ;this is ugly, make better
-(defn diagonalWinner?
-  [board]
-  (let [[r1 r2 r3] board
-        [zero one two] r1
-        [three four] r2
-        [six seven eight] r3]
-    (or (contains-same-pieces (vector zero four eight))
-        (contains-same-pieces (vector two four six)))))
-
-(defn diagonalWinnerNew
+(defn diagonal-winner?
   [board]
   (let [[r1 r2 r3] board
         [zero one two] r1
@@ -59,11 +44,12 @@
     (or (= (vector zero four eight))
         (= (vector two four six)))))
 
-(defn hasHorizontalWinner?
+
+(defn has-horizontal-winner?
   [board]
   (some true? (map contains-same-pieces board)))
 
-(defn hasVerticalWinner?
+(defn has-vertical-winner?
   [board]
   (some true? (map contains-same-pieces (apply map vector board))))
 
@@ -71,19 +57,19 @@
   [board]
   (filter integer? board))
 
-(defn hasWinner?
+(defn has-winner?
   [board]
   (and (< (count (mapcat valid-moves board)) 5)
-       (or (hasHorizontalWinner? board)
-           (hasVerticalWinner? board)
-           (diagonalWinner? board))))
+       (or (has-horizontal-winner? board)
+           (has-vertical-winner? board)
+           (diagonal-winner? board))))
 
-(defn movesAvailable
+(defn moves-available
  [board]
  (count (mapcat valid-moves board)))
 
 
-(defn acceptableAnwser?
+(defn acceptable-answer?
   "returns true if its a string digit thats between 0 - 8"
   [answer]
   (and
@@ -91,11 +77,7 @@
     (every? #(Character/isDigit %) answer);if character can be turned into number
     (not= "9" answer)))
 
-(defn exitGame?
-  [lowerCaseE]
-  (and (= "e" lowerCaseE) (System/exit 0)))
-
-(defn printBoard
+(defn print-board
   [board]
   (doseq [a board]
    (println a)))
@@ -103,33 +85,9 @@
 
 (defn update-board
   [num mark board]
-  (if (number? (get-in board (getCell num)))
-    (assoc-in board (getCell num) mark)
+  (if (number? (get-in board (get-cell num)))
+    (assoc-in board (get-cell num) mark)
     board))
-
-(defn get-input
-  ([]
-   (let [input (read-line)]
-    (if (acceptableAnwser? input)
-     input
-     (get-input "please type only cell number"))))
-  ([message]
-   (println message)
-   (get-input)))
-
-; instead of if do condition
-;cond
-;hasWinner?
-;(= 0 (movesAvailable game)
-;user Input "e" - go ahead and exit game
-(defn new-game
-  []
-  (loop [game newState
-         moves-available (movesAvailable game)]
-    (printBoard game)
-    (if (= 0 (movesAvailable game))
-      (println "nobody fucking won")
-      (recur (update-board (Integer/parseInt (get-input)) (nextMark game) game) (dec moves-available)))))
 
 (defn exit-game?
   [lower-case-e]
@@ -140,112 +98,97 @@
   []
   (System/exit 0))
 
-;what i need to do is make it so that it only asks for input once
-;where though
-;
-;
+; (defn new-game
+;   []
+;   (loop [all-inputs []
+;          game newState
+;          moves-available (moves-available game)
+;          current-input (read-line)]
+;     (print-board game)
+;     (cond
+;       (exit-game? current-input) (exit-game)
+;       (has-winner? game) (println "fuck yeah youve won ")
+;       (= 0 (moves-available game)) (println "nobody fucking won"))
+;     (recur (cons all-inputs current-input)
+;        (update-board (Integer/parseInt
+;                       ;(if (acceptable-answer? current-input) current-input "9"))
+;                       current-input)
+;         (next-mark game) game) (dec moves-available))))
+
+
+
+
 (defn new-gameV2
   []
   (loop [input (read-line)
          game newState
-         moves-available (movesAvailable game)]
-    (printBoard game)
-    (cond
-      (exit-game? input) (exit-game)
-      (hasWinner? game) (println "fuck yeah youve won ")
-      (= 0 (movesAvailable game)) (println "nobody fucking won"))
-    (recur (read-line) (update-board (Integer/parseInt input) (nextMark game) game) (dec moves-available))))
-;
-; (def input (flush) (read-line))
+         moves-available (moves-available game)]
+        (print-board game)
+        (cond
+          (exit-game? input) (exit-game)
+          (has-winner? game) (println "fuck yeah youve won ")
+          (= 0 (moves-available game)) (println "nobody fucking won"))
+        (recur (read-line) (update-board (Integer/parseInt input) (next-mark game) game) (dec moves-available))))
+
+(def hasWinnerTest [["x" "x" "x"] [3 4 5] [6 7 8]])
+(println hasWinnerTest)
 
 (defn new-gameV3
   []
   (loop [all-inputs []
          game newState
-         moves-available (movesAvailable game)]
-    (printBoard game)
+         moves-available (moves-available game)]
+    (print-board game)
     (let [current-input (read-line)]
+     (println all-inputs
       (cond
-        (exit-game? current-input) (exit-game)
-        (hasWinner? game) (println "fuck yeah youve won ")
-        (= 0 (movesAvailable game)) (println "nobody fucking won"))
-      (recur (conj all-inputs current-input) (update-board (Integer/parseInt current-input) (nextMark game) game) (dec moves-available)))))
+        (exit-game? current-input) (println "it works from here on out")
+        (has-winner? game) (println "fuck yeah youve won ")
+        (= 0 (moves-available game)) (println "nobody fucking won"))
+      (recur (cons all-inputs current-input) (update-board
+                                              (Integer/parseInt (if (acceptable-answer? current-input) current-input) "9")
+                                              (next-mark game) game)
+                                         (dec moves-available))))))
 
 
-
-(defn readLines
+(defn new-gameV3
   []
-  (loop [lines []]
-    (let [current-line (read-line)]
-     (if (= current-line "")
-      (println lines)
-      (recur (conj lines current-line))))))
+  (loop [game newState
+         moves-available (moves-available game)]
+    (print-board game)
+    (case (read-line)
+      "e" (println "exits game")
+      "0" (println "o"))
+    (recur (update-board
+             (Integer/parseInt input)
+             (next-mark game) game
+             (dec moves-available)))))
 
 
 
+(defn new-gameV4
+  [])
+
+
+
+
+;inplement this
+(defn main-loop []
+  (case (read-line)
+   "q" nil
+   "a" (do (println "got a command!") (recur))
+   "b" (do (println "got b command!") (recur))
+     (do (println "got invalid command!") (recur))))
 
 
 (defn -main
   [& args]
-  (new-gameV2))
+  (new-gameV3))
 
 
-;if you enter a letter it breaks
-
-
-
-
-;NEED TO printboard in command line after acceptableAnwser? fails
 
 
 ; ;need to if user enters e call exit game
 ;
 ; reason for let is so that it fixes
 ; situations like -> X wins but prints O has won
-
-
-
-
-
-;clean up
-
-;make it be able to run in lein run in command prompt
-
-
-
-
-
-;todo
-;make exit game but without exiting vm, and shutting down the vm
-
-
-
-; (defn getInput
-;   ([] (println "choose cell ")
-;    (printBoard @state)
-;    (flush)
-;    (let [userInput (read-line)]
-;      (exitGame? userInput)
-;      (if (acceptableAnwser? userInput)
-;        (game (Integer/parseInt userInput))
-;        (getInput "please type cell number, e - exit game"))))
-;   ([message] (println message)
-;    (getInput)))
-
-
-
-
-;reason for let is so that it fixes
-; situations like -> X wins but prints O has won
-; (defn game
-;   [num]
-;   (let [currentMark (nextMark @state)]
-;     (updateBoard num currentMark)
-;     (cond
-;       (hasWinner? @state)
-;       (do (println (str "player " currentMark "has won"))
-;           (exitGame? "e"))
-;       (= (movesAvailable @state) 0)
-;       (do (println "nobody won. run program to play again")
-;           (exitGame? "e"))))
-;  (getInput))
